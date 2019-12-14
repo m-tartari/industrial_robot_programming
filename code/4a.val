@@ -1,0 +1,27 @@
+edit ex4
+
+tool null
+
+speed 30 always
+speed 100 mmps always
+
+stop.condition = 1009
+motion.step = 10
+
+distance.point = 0
+timer 1 = 0
+arrival = 100
+set init.point = here
+do
+    set a.little.higher = shift(here by 0,0,motion.step)
+    moves a.little.higher
+    distance.point = distance(here,init.point)
+until (sig(stop.condition) or (distance.point >= arrival))
+
+time.taken = timer(1)
+type "distance = ",distance.point
+speed.average = distance.point/time.taken
+type "Speed = ", speed.average
+
+ e
+  

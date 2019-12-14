@@ -1,0 +1,78 @@
+edit ex1b
+
+tool succion.pad
+
+sense.P1 = 1004
+sense.P2 = 1005
+
+detector1 = 1007
+detector2 = 1008
+
+conveyor.start = 1
+conveyor.stop = -1
+conveyor.go.right = 2
+conveyor.go.left = -2
+air.pressure = 5
+
+conveyor.lenght = 700
+
+speed 30 always
+speed 100 mmps always
+
+;check sensors
+signal air.pressure
+wait sig(sense.P1) or sig(sense.P2) 
+if sig(sense.P1) then
+    set Obj.pos=P1
+else
+    if sig(sense.P2) then
+        set Obj.pos=P2
+    end
+end
+
+;move and grab
+appro Obj.pos,50
+moves Obj.pos
+closei
+departs 50
+
+;place on conveyor
+appro place,50
+moves place
+openi
+depart 50
+appro grasp.loc.stopped, 150
+
+;move conveyor
+signal conveyor.start, conveyor.go.right
+wait sig(detector2)
+timer 1 = 0
+wait timer(1)> 1
+signal conveyor.stop
+timer 1 = 0
+wait timer(1)> 1
+signal conveyor.start, conveyor.go.left
+wait sig(detector2)
+timer 1 = 0
+wait sig(detector1)
+time.taken = timer(1)
+
+;calculate speed
+conveyor.speed = conveyor.lenght/time.taken
+
+;grab and place back 
+set Obj.move.pose = shift (grasp.loc.stopped by 0,150,0)
+speed conveyor.speed*sqrt(2) mmps
+moves Obj.move.pose
+closei
+departs 50
+appro P3,50
+moves P3
+openi
+departs 50
+move wait.loc
+
+e
+
+load alltools.v2
+load pickconv.lc

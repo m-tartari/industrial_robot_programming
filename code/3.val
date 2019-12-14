@@ -1,0 +1,29 @@
+edit ex3
+tool gripper
+air.pressure = 5
+signal air.pressure
+set pallet.frame = frame (p4, p1, p2 ,p4)
+shift.x= 82
+shift.y= 59
+obj.height=-15
+row.max = 2
+col.max = 3
+for row=0 to row.max-1 step 1
+for col=0 to col.max-1 step 1
+set depose = depose:shift(null by 0,0,obj.height)
+set current.pose = pallet.frame:shift(null by col*shift.x,row*shift.y,0)
+appro current.pose, 50
+moves current.pose
+closei
+departs 50
+appro depose, 50
+moves depose
+openi
+departs 50
+end
+end
+move wait.loc
+e
+
+load pallet.lc
+load alltools.v2

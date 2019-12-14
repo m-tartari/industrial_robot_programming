@@ -1,0 +1,47 @@
+edit ex2
+
+tool pen
+
+glue.empty = 1009
+glue.ok = 1010
+
+reacti glue.empty, recharge.gun
+
+appro board:A, 50
+moves board:A
+closei
+moves board:B
+break
+moves board:C
+break
+moves board:D
+break
+moves board:A
+openi
+departs 50
+move wait.loc
+set board = board:shift(null by 10, 10, 0)
+
+e
+
+
+edit recharge.gun
+
+set current.pos=here
+set current.dest=dest
+openi
+departs 50
+appro recharge,50
+moves recharge
+wait sig(glue.ok)
+departs 50
+appro current.pos, 50
+moves current.pos
+closei
+moves current.dest
+reacti glue.empty, recharge.gun
+e
+
+load alltools.v2
+load glue.lc
+   

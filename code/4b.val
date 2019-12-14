@@ -1,0 +1,34 @@
+edit ex4b
+
+tool null
+
+speed 30 always
+speed 100 mmps always
+
+stop.condition = 1009
+
+distance.point = 0
+arrival = 400
+set init.point = here
+set a.little.higher = shift(here by 0,0,arrival)
+
+pcexecute stop.check, -1
+timer 1 = 0
+moves a.little.higher
+break
+
+pcend
+
+time.taken = timer(1)
+speed.average = distance(here,init.point)/time.taken
+type "distance = ",distance(here,init.point)
+type "Speed = ", speed.average
+
+e
+ 
+edit stop.check
+if sig(stop.condition) then 
+    brake
+end
+ 
+e
